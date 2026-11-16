@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Velvet & Crumb — Artisan Chocolate & Cream Patisserie</title>
+  <!-- Google Fonts: Fraunces (Display Serif) & Plus Jakarta Sans (Clean Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            choco: {
+              950: '#180C07',
+              900: '#24130C',
+              800: '#331B12',
+              700: '#47271B',
+              600: '#5E3626',
+              400: '#8E624D',
+            },
+            milk: {
+              50: '#FFFDF9',
+              100: '#FDF6EC',
+              200: '#F7E8D3',
+              300: '#EDD4B4',
+            },
+            caramel: {
+              400: '#E59F56',
+              500: '#D98A3C',
+              600: '#B86E25',
+            }
+          },
+          fontFamily: {
+            serif: ['Fraunces', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          boxShadow: {
+            'choco': '0 14px 30px -8px rgba(36, 19, 12, 0.25)',
+            'choco-lg': '0 22px 45px -10px rgba(24, 12, 7, 0.45)',
+            'caramel': '0 10px 25px -5px rgba(217, 138, 60, 0.4)',
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 6s ease-in-out 3s infinite',
+            'spin-slow': 'spin 24s linear infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-12px) rotate(1.5deg)' },
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    /* Custom subtle cocoa-dust grain overlay & scrollbar polish */
+    body {
+      background-color: #FDF6EC;
+      color: #24130C;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    .cocoa-grain {
+      background-image: radial-gradient(rgba(253, 246, 236, 0.05) 1px, transparent 0);
+      background-size: 20px 20px;
+    }
+    .milk-grain {
+      background-image: radial-gradient(rgba(36, 19, 12, 0.045) 1px, transparent 0);
+      background-size: 22px 22px;
+    }
+    .card-lift {
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .card-lift:hover {
+      transform: translateY(-6px);
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #24130C;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #5E3626;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #D98A3C;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-caramel-500 selection:text-milk-100">
+
+  <!-- Toast Notification Banner (Replaces alert()) -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- 1. STICKY GLASSMORPHIC NAVBAR -->
+  <header class="sticky top-0 z-40 w-full bg-choco-900/90 backdrop-blur-md border-b border-milk-200/15 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Brand Logo -->
+        <a href="#" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-caramel-400 to-caramel-600 flex items-center justify-center shadow-caramel group-hover:scale-105 transition-transform">
+            <!-- Artisan Cocoa Bean & Swirl SVG -->
+            <svg class="w-6 h-6 text-choco-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2C7.5 2 4 6.5 4 12s3.5 10 8 10 8-4.5 8-10S16.5 2 12 2Z" />
+              <path d="M12 2c-2.5 3-2.5 7 0 10s2.5 7 0 10" />
+            </svg>
+          </div>
+          <div>
+            <span class="font-serif text-xl sm:text-2xl font-bold tracking-tight text-milk-100 block leading-none">
+              Velvet <span class="text-caramel-400 italic font-semibold">&amp;</span> Crumb
+            </span>
+            <span class="text-[10px] uppercase tracking-[0.22em] text-milk-300/75 font-medium">Artisan Patisserie</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="#menu" class="text-sm font-medium text-milk-200 hover:text-caramel-400 transition-colors">Menu</a>
+          <a href="#box-builder" class="text-sm font-medium text-milk-200 hover:text-caramel-400 transition-colors flex items-center gap-1.5">
+            Custom Box
+            <span class="px-2 py-0.5 text-[10px] font-bold uppercase rounded-full bg-caramel-500/20 text-caramel-400 border border-caramel-400/30">Build</span>
+          </a>
+          <a href="#our-story" class="text-sm font-medium text-milk-200 hover:text-caramel-400 transition-colors">Our Story</a>
+          <a href="#workshops" class="text-sm font-medium text-milk-200 hover:text-caramel-400 transition-colors">Workshops</a>
+        </nav>
+
+        <!-- Actions: Cart Drawer Trigger & Mobile Toggle -->
+        <div class="flex items-center gap-3">
+          <button id="open-cart-btn" aria-label="Open Pastry Box Cart" class="relative inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-milk-100 hover:bg-milk-200 text-choco-900 font-semibold text-sm shadow-choco transition-all active:scale-95">
+            <svg class="w-4 h-4 text-choco-800" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <span class="hidden sm:inline">My Box</span>
+            <span id="cart-badge" class="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1.5 text-xs font-bold rounded-full bg-caramel-500 text-choco-950 transition-transform">0</span>
+          </button>
+
+          <!-- Mobile Hamburger -->
+          <button id="mobile-menu-btn" aria-label="Toggle Menu" class="md:hidden p-2.5 rounded-xl bg-choco-800 text-milk-100 hover:bg-choco-700 border border-milk-200/15">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div id="mobile-menu" class="hidden md:hidden pb-5 pt-2 border-t border-milk-200/10 space-y-2">
+        <a href="#menu" class="block px-3 py-2.5 rounded-xl text-milk-100 hover:bg-choco-800 font-medium">Menu Showcase</a>
+        <a href="#box-builder" class="block px-3 py-2.5 rounded-xl text-caramel-400 hover:bg-choco-800 font-semibold">Custom 4-Treat Box Builder</a>
+        <a href="#our-story" class="block px-3 py-2.5 rounded-xl text-milk-100 hover:bg-choco-800 font-medium">The Craft &amp; Story</a>
+        <a href="#workshops" class="block px-3 py-2.5 rounded-xl text-milk-100 hover:bg-choco-800 font-medium">Baking Workshops &amp; Hours</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. HERO SECTION: DEEP DARK CHOCOLATE + CREAMY MILKY CONTRAST -->
+  <section class="relative bg-choco-900 cocoa-grain text-milk-100 pt-10 pb-24 sm:pt-16 sm:pb-32 overflow-hidden">
+    <!-- Ambient Caramel & Chocolate Glow Orbs -->
+    <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-caramel-500/15 blur-3xl pointer-events-none"></div>
+    <div class="absolute top-1/2 -right-32 w-[28rem] h-[28rem] rounded-full bg-choco-700/40 blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        
+        <!-- Left Column: Bold Editorial Typography & Dual CTAs -->
+        <div class="lg:col-span-7 space-y-7 text-center lg:text-left">
+          <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-choco-800/90 border border-caramel-500/35 text-caramel-400 text-xs font-semibold tracking-wider uppercase shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-caramel-400 animate-pulse"></span>
+            Single-Origin 72% Cocoa &amp; Pasture Cream
+          </div>
+
+          <h1 class="font-serif text-4xl sm:text-6xl lg:text-[4.25rem] font-extrabold leading-[1.06] tracking-tight text-milk-100">
+            Where Dark <span class="text-caramel-400 italic font-semibold">Velvet</span> Meets Warm <span class="underline decoration-caramel-500/60 decoration-4 underline-offset-8">Sweet Cream.</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-milk-200/85 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+            Small-batch laminated pastries, glossy hand-tempered ganaches, and whipped mascarpone brioche baked at dawn. Crafted with stone-ground cacao and cultured jersey milk.
+          </p>
+
+          <!-- Dual CTAs -->
+          <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+            <a href="#menu" class="w-full sm:w-auto px-8 py-4 rounded-full bg-caramel-500 hover:bg-caramel-400 text-choco-950 font-bold text-base shadow-caramel transition-all hover:-translate-y-0.5 text-center">
+              Explore Menu
+            </a>
+            <a href="#box-builder" class="w-full sm:w-auto px-8 py-4 rounded-full bg-milk-100 hover:bg-milk-200 text-choco-900 font-bold text-base shadow-choco transition-all hover:-translate-y-0.5 flex items-center justify-center gap-2">
+              <span>Order Custom Cake &amp; Box</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          </div>
+
+          <!-- Micro Trust Metrics -->
+          <div class="grid grid-cols-3 gap-4 pt-6 border-t border-milk-200/15 max-w-lg mx-auto lg:mx-0">
+            <div>
+              <p class="font-serif text-2xl sm:text-3xl font-bold text-caramel-400">72%</p>
+              <p class="text-xs text-milk-300/75 mt-0.5">Direct-Trade Cacao</p>
+            </div>
+            <div>
+              <p class="font-serif text-2xl sm:text-3xl font-bold text-milk-100">4:30 AM</p>
+              <p class="text-xs text-milk-300/75 mt-0.5">First Oven Pull</p>
+            </div>
+            <div>
+              <p class="font-serif text-2xl sm:text-3xl font-bold text-caramel-400">4.9 ★</p>
+              <p class="text-xs text-milk-300/75 mt-0.5">1,400+ Pastry Lovers</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Layered Milky Card Stack & Floating Artisan Badges -->
+        <div class="lg:col-span-5 relative flex justify-center">
+          <!-- Floating Badge Top Left -->
+          <div class="animate-float absolute -top-5 -left-2 sm:left-2 z-20 bg-milk-100 text-choco-900 px-4 py-3 rounded-2xl shadow-choco-lg border-2 border-choco-800/15 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-choco-900 text-caramel-400 flex items-center justify-center font-serif font-bold text-lg">
+              ✦
+            </div>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider text-choco-600">Fresh Now</p>
+              <p class="font-serif font-bold text-sm text-choco-900">Salted Caramel Cruffin</p>
+            </div>
+          </div>
+
+          <!-- Main Creamy Milky Showcase Card -->
+          <div class="relative w-full max-w-md bg-milk-100 text-choco-900 rounded-[2rem] p-5 sm:p-6 shadow-choco-lg border-2 border-milk-200">
+            <div class="relative rounded-2xl overflow-hidden bg-choco-800 aspect-[4/3] group">
+              <img 
+                src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=900&q=80" 
+                onerror="this.src='https://placehold.co/800x600/331B12/FDF6EC?text=Dark+Chocolate+Ganache+Tart'"
+                alt="Decadent Dark Chocolate & Vanilla Bean Cream Cake" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-choco-950/75 via-transparent to-transparent"></div>
+              <span class="absolute top-3.5 right-3.5 px-3 py-1 rounded-full bg-choco-900/90 backdrop-blur-sm text-caramel-400 text-xs font-bold border border-caramel-500/30">
+                Signature #01
+              </span>
+              <div class="absolute bottom-3.5 left-4 right-4 flex items-end justify-between text-milk-100">
+                <div>
+                  <p class="text-xs uppercase tracking-widest text-milk-200/80">House Masterpiece</p>
+                  <h3 class="font-serif text-xl font-bold">Midnight Ganache &amp; Milk Cloud</h3>
+                </div>
+                <span class="font-serif text-xl font-bold text-caramel-400">$14.50</span>
+              </div>
+            </div>
+
+            <!-- Card Footer Quick Action -->
+            <div class="mt-5 flex items-center justify-between gap-4">
+              <div class="flex items-center gap-2 text-xs font-medium text-choco-700">
+                <span class="px-2.5 py-1 rounded-lg bg-milk-200 text-choco-900 font-semibold">72% Valrhona</span>
+                <span class="px-2.5 py-1 rounded-lg bg-milk-200 text-choco-900 font-semibold">Madagascar Vanilla</span>
+              </div>
+              <button onclick="addToCartById(1)" class="px-4 py-2.5 rounded-xl bg-choco-900 hover:bg-choco-800 text-milk-100 text-xs font-bold tracking-wide transition-colors flex items-center gap-1.5 shrink-0">
+                <span>+ Add Slice</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Floating Artisanal Seal Bottom Right -->
+          <div class="animate-float-delayed absolute -bottom-6 -right-2 sm:right-2 z-20 bg-caramel-500 text-choco-950 px-4 py-3 rounded-2xl shadow-caramel border border-milk-100/40 flex items-center gap-2.5">
+            <svg class="w-6 h-6 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2l2.4 7.4h7.6l-6.2 4.5 2.4 7.4-6.2-4.5-6.2 4.5 2.4-7.4-6.2-4.5h7.6z"/>
+            </svg>
+            <div class="leading-tight">
+              <p class="text-[11px] font-extrabold uppercase tracking-wider">100% Cultured Butter</p>
+              <p class="text-xs font-medium text-choco-900">Laminated 27 Layers</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Creamy Milk Organic Wave Divider -->
+    <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none">
+      <svg class="relative block w-full h-12 sm:h-20" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,48 C320,125 560,-15 920,65 C1160,115 1320,75 1440,40 L1440,120 L0,120 Z" fill="#FDF6EC"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 3. INTERACTIVE MENU SHOWCASE (WARM MILKY SURFACE WITH CHOCOLATE ACCENTS) -->
+  <section id="menu" class="py-16 sm:py-24 bg-milk-100 milk-grain relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div class="space-y-3">
+          <span class="inline-block text-xs font-bold uppercase tracking-[0.22em] text-caramel-600">Baked Fresh Every Morning</span>
+          <h2 class="font-serif text-3xl sm:text-5xl font-bold text-choco-900 tracking-tight">
+            The Patisserie Case
+          </h2>
+          <p class="text-choco-700 max-w-xl text-sm sm:text-base">
+            Filter our daily selection of tempered chocolates, whipped cream pastries, celebration cakes, and naturally leavened loaves.
+          </p>
+        </div>
+
+        <!-- Category Filter Tabs -->
+        <div id="category-tabs" class="flex flex-wrap gap-2">
+          <button data-category="All" class="filter-tab active px-4 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all bg-choco-900 text-milk-100 shadow-choco">
+            All Treats
+          </button>
+          <button data-category="Chocolates & Truffles" class="filter-tab px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-milk-200/80 text-choco-800 hover:bg-milk-300">
+            Chocolates &amp; Truffles
+          </button>
+          <button data-category="Milky Pastries" class="filter-tab px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-milk-200/80 text-choco-800 hover:bg-milk-300">
+            Milky Pastries
+          </button>
+          <button data-category="Artisan Cakes" class="filter-tab px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-milk-200/80 text-choco-800 hover:bg-milk-300">
+            Artisan Cakes
+          </button>
+          <button data-category="Sourdough & Breads" class="filter-tab px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-milk-200/80 text-choco-800 hover:bg-milk-300">
+            Sourdough &amp; Breads
+          </button>
+        </div>
+      </div>
+
+      <!-- Product Grid -->
+      <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-7">
+        <!-- Populated dynamically via JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. INTERACTIVE 4-TREAT SIGNATURE GIFT BOX BUILDER -->
+  <section id="box-builder" class="py-20 sm:py-28 bg-choco-900 cocoa-grain text-milk-100 relative overflow-hidden">
+    <!-- Top Wave Transition from Milk to Dark Chocolate -->
+    <div class="absolute top-0 left-0 right-0 w-full overflow-hidden leading-none rotate-180 pointer-events-none">
+      <svg class="relative block w-full h-10 sm:h-16" viewBox="0 0 1440 100" preserveAspectRatio="none">
+        <path d="M0,30 C420,100 980,0 1440,60 L1440,100 L0,100 Z" fill="#FDF6EC"></path>
+      </svg>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-4">
+      <div class="text-center max-w-2xl mx-auto mb-14 space-y-3">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-choco-800 border border-caramel-500/35 text-caramel-400 text-xs font-bold uppercase tracking-widest">
+          Interactive Pairing Studio
+        </span>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-milk-100">
+          Curate Your 4-Piece <span class="text-caramel-400 italic">Velvet &amp; Milk</span> Box
+        </h2>
+        <p class="text-milk-200/80 text-sm sm:text-base">
+          Select any four artisan treats below to assemble a ribbon-tied keepsake box with gold-foil tasting notes. Enjoy <span class="text-caramel-400 font-semibold">10% off</span> when all 4 slots are filled!
+        </p>
+      </div>
+
+      <div class="grid lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left 7 Cols: Clickable Treat Palette -->
+        <div class="lg:col-span-7 bg-choco-800/80 backdrop-blur-sm border border-milk-200/15 rounded-3xl p-6 sm:p-8">
+          <div class="flex items-center justify-between mb-5">
+            <h3 class="font-serif text-xl font-bold text-milk-100">1. Tap Treats to Place in Box</h3>
+            <span class="text-xs text-milk-300/75">Mix dark cocoa &amp; sweet cream</span>
+          </div>
+
+          <div id="builder-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Right 5 Cols: Live Visual Chocolate & Cream Gift Box -->
+        <div class="lg:col-span-5 bg-milk-100 text-choco-900 rounded-3xl p-6 sm:p-8 shadow-choco-lg border-2 border-caramel-500/40 sticky top-24">
+          <div class="flex items-center justify-between border-b border-choco-900/10 pb-4 mb-5">
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-caramel-600">Signature Keepsake Box</span>
+              <h3 class="font-serif text-2xl font-bold text-choco-900">Your Custom Quartet</h3>
+            </div>
+            <button id="clear-box-btn" class="text-xs font-semibold text-choco-600 hover:text-choco-900 underline">
+              Reset
+            </button>
+          </div>
+
+          <!-- 4 Visual Gift Box Slots (2x2 Grid) -->
+          <div class="p-4 rounded-2xl bg-choco-900 shadow-inner border-4 border-choco-800 relative">
+            <!-- Decorative Gold Ribbon Crosshair -->
+            <div class="grid grid-cols-2 gap-3" id="box-slots-grid">
+              <!-- 4 Slots rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Progress & Pricing Summary -->
+          <div class="mt-6 space-y-3">
+            <div class="flex items-center justify-between text-sm">
+              <span class="font-medium text-choco-700">Box Completion</span>
+              <span id="box-progress-text" class="font-bold text-choco-900">0 / 4 Selected</span>
+            </div>
+            <div class="w-full h-2.5 rounded-full bg-milk-200 overflow-hidden">
+              <div id="box-progress-bar" class="h-full bg-gradient-to-r from-choco-800 to-caramel-500 transition-all duration-300 rounded-full" style="width: 0%"></div>
+            </div>
+
+            <div class="pt-3 border-t border-choco-900/10 flex items-center justify-between">
+              <div>
+                <p class="text-xs text-choco-600">Bundle Total <span id="bundle-discount-badge" class="hidden ml-1 px-2 py-0.5 rounded-full bg-caramel-500/20 text-caramel-600 font-bold text-[10px]">10% SAVED</span></p>
+                <p id="box-total-price" class="font-serif text-2xl font-bold text-choco-900">$0.00</p>
+              </div>
+              <button id="add-custom-box-btn" disabled class="px-6 py-3.5 rounded-full bg-choco-900 disabled:bg-choco-900/35 disabled:cursor-not-allowed hover:bg-choco-800 text-milk-100 font-bold text-sm shadow-choco transition-all">
+                Add Box to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Wave Transition back to Creamy Milk -->
+    <div class="absolute bottom-0 left-0 right-0 w-full overflow-hidden leading-none pointer-events-none">
+      <svg class="relative block w-full h-10 sm:h-16" viewBox="0 0 1440 100" preserveAspectRatio="none">
+        <path d="M0,55 C380,115 960,-10 1440,50 L1440,100 L0,100 Z" fill="#FDF6EC"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 5. "THE CRAFT" / PHILOSOPHY SECTION (ALTERNATING MILK & DARK CHOCOLATE BLOCKS) -->
+  <section id="our-story" class="py-20 sm:py-28 bg-milk-100 milk-grain">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20">
+      
+      <!-- Block 1: Milky Canvas + Dark Cocoa Feature -->
+      <div class="grid lg:grid-cols-12 gap-10 items-center">
+        <div class="lg:col-span-6 relative">
+          <div class="rounded-[2rem] overflow-hidden shadow-choco-lg border-4 border-choco-900 bg-choco-800 aspect-[16/11]">
+            <img 
+              src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=900&q=80" 
+              onerror="this.src='https://placehold.co/800x550/24130C/FDF6EC?text=Single+Origin+72%25+Cocoa+Tempering'"
+              alt="Artisan Chocolatier Tempering Dark Chocolate"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <div class="hidden sm:flex items-center gap-3 absolute -bottom-5 -right-5 bg-choco-900 text-milk-100 px-5 py-3.5 rounded-2xl shadow-choco border border-caramel-500/30">
+            <span class="font-serif text-2xl font-bold text-caramel-400">72h</span>
+            <span class="text-xs leading-snug text-milk-200">Stone-conched for<br/>mirror-gloss snap</span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 space-y-5 lg:pl-6">
+          <span class="text-xs font-bold uppercase tracking-[0.22em] text-caramel-600">01 — The Cocoa Bean</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-choco-900 leading-tight">
+            Single-Origin Cacao, Roasted &amp; Conched In-House
+          </h2>
+          <p class="text-choco-700 leading-relaxed">
+            We partner directly with heirloom cacao growers in Ecuador and Madagascar. Every batch is lightly roasted to preserve natural notes of roasted hazelnut, dark cherry, and warm espresso—never masked by excess sugar.
+          </p>
+          <div class="grid grid-cols-2 gap-4 pt-2">
+            <div class="p-4 rounded-2xl bg-milk-200/70 border border-choco-900/10">
+              <p class="font-serif font-bold text-choco-900 text-lg">Hand-Tempered</p>
+              <p class="text-xs text-choco-700 mt-1">Crystallized on chilled marble slabs for an unmistakable crisp snap.</p>
+            </div>
+            <div class="p-4 rounded-2xl bg-milk-200/70 border border-choco-900/10">
+              <p class="font-serif font-bold text-choco-900 text-lg">Zero Palm Oils</p>
+              <p class="text-xs text-choco-700 mt-1">Pure cocoa butter and cultured Normandy-style cream only.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Block 2: Dark Chocolate Block Inside Creamy Page -->
+      <div class="rounded-[2.5rem] bg-choco-900 cocoa-grain text-milk-100 p-8 sm:p-12 lg:p-14 shadow-choco-lg border border-choco-700">
+        <div class="grid lg:grid-cols-12 gap-10 items-center">
+          <div class="lg:col-span-6 space-y-5 order-2 lg:order-1">
+            <span class="text-xs font-bold uppercase tracking-[0.22em] text-caramel-400">02 — The Pasture Cream</span>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-milk-100 leading-tight">
+              Slow-Churned Cultured Butter &amp; Sweet Jersey Milk
+            </h2>
+            <p class="text-milk-200/85 leading-relaxed">
+              Great chocolate deserves an equally expressive dairy counterpart. Our milk is sourced from grass-fed Jersey herds within 45 miles of our ovens, cultured for 24 hours for tangy depth, and whipped into cloud-like Chantilly and caramelized milk jams.
+            </p>
+            <div class="pt-2 flex flex-wrap gap-3">
+              <span class="px-4 py-2 rounded-full bg-choco-800 border border-milk-200/15 text-xs font-semibold text-milk-100">
+                ✦ 84% Butterfat Lamination
+              </span>
+              <span class="px-4 py-2 rounded-full bg-choco-800 border border-milk-200/15 text-xs font-semibold text-milk-100">
+                ✦ Cold-Infused Vanilla Bean
+              </span>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 order-1 lg:order-2">
+            <div class="rounded-[1.75rem] overflow-hidden border-2 border-caramel-500/35 shadow-choco aspect-[16/11]">
+              <img 
+                src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=900&q=80" 
+                onerror="this.src='https://placehold.co/800x550/F7E8D3/24130C?text=Flaky+Cultured+Butter+Croissants'"
+                alt="Golden Flaky Laminated Croissants"
+                class="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. CUSTOMER TESTIMONIALS & UPCOMING WORKSHOPS -->
+  <section id="workshops" class="py-16 sm:py-24 bg-milk-200/65 border-t border-choco-900/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Testimonials Row -->
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-[0.22em] text-caramel-600">Sweet Words</span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-choco-900 mt-2">
+          Adored by Chocolate &amp; Pastry Devotees
+        </h2>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 mb-16">
+        <div class="bg-milk-100 p-7 rounded-3xl border border-choco-900/10 shadow-choco flex flex-col justify-between">
+          <div>
+            <div class="text-caramel-500 text-sm tracking-widest mb-3">★★★★★</div>
+            <p class="font-serif italic text-choco-900 text-lg leading-relaxed">
+              “The contrast between the bitter 72% ganache tart and the warm vanilla-bean milk cloud is pure alchemy. Best patisserie in the city.”
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-choco-900/10 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-choco-900 text-caramel-400 font-serif font-bold flex items-center justify-center text-sm">C</div>
+            <div>
+              <p class="text-sm font-bold text-choco-900">Camille Laurent</p>
+              <p class="text-xs text-choco-600">Culinary Editor</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-choco-900 text-milk-100 p-7 rounded-3xl shadow-choco-lg border border-caramel-500/30 flex flex-col justify-between">
+          <div>
+            <div class="text-caramel-400 text-sm tracking-widest mb-3">★★★★★</div>
+            <p class="font-serif italic text-milk-100 text-lg leading-relaxed">
+              “I ordered the custom 4-piece velvet gift box for an anniversary dinner. Every single truffle had that crisp marble-tempered snap.”
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-milk-200/15 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-caramel-500 text-choco-950 font-serif font-bold flex items-center justify-center text-sm">M</div>
+            <div>
+              <p class="text-sm font-bold text-milk-100">Marcus Vance</p>
+              <p class="text-xs text-milk-300/75">Verified Regular</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-milk-100 p-7 rounded-3xl border border-choco-900/10 shadow-choco flex flex-col justify-between">
+          <div>
+            <div class="text-caramel-500 text-sm tracking-widest mb-3">★★★★★</div>
+            <p class="font-serif italic text-choco-900 text-lg leading-relaxed">
+              “Their Brown Butter Brioche and Dulce de Leche Cruffin are worth waking up at 7 AM on a Sunday for. Unmatched crust and crumb.”
+            </p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-choco-900/10 flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-choco-900 text-caramel-400 font-serif font-bold flex items-center justify-center text-sm">E</div>
+            <div>
+              <p class="text-sm font-bold text-choco-900">Elena Rostova</p>
+              <p class="text-xs text-choco-600">Architecture &amp; Design</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekend Baking Workshop Banner -->
+      <div class="rounded-3xl bg-gradient-to-r from-choco-900 via-choco-800 to-choco-900 text-milk-100 p-8 sm:p-10 shadow-choco-lg border border-caramel-500/30 flex flex-col lg:flex-row items-center justify-between gap-6">
+        <div class="space-y-2 text-center lg:text-left">
+          <span class="px-3 py-1 rounded-full bg-caramel-500/20 text-caramel-400 text-xs font-bold uppercase tracking-wider">Sunday Pastry Atelier</span>
+          <h3 class="font-serif text-2xl sm:text-3xl font-bold">Chocolate Tempering &amp; Croissant Lamination Class</h3>
+          <p class="text-sm text-milk-200/80 max-w-2xl">Join Head Chocolatier Julian Mercer every Sunday at 10:00 AM. Includes espresso bar, apron, and a full box of your handmade creations.</p>
+        </div>
+        <button onclick="reserveWorkshop()" class="px-7 py-3.5 rounded-full bg-caramel-500 hover:bg-caramel-400 text-choco-950 font-bold text-sm shadow-caramel transition-all shrink-0">
+          Reserve Seat ($95)
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 7. DEEP ESPRESSO CHOCOLATE FOOTER WITH HOURS, LOCATION & NEWSLETTER -->
+  <footer class="bg-choco-950 text-milk-200 pt-16 pb-12 border-t border-milk-200/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-milk-200/10">
+        
+        <!-- Brand & Location Column -->
+        <div class="lg:col-span-4 space-y-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-caramel-500 flex items-center justify-center text-choco-950 font-serif font-extrabold text-xl">V</div>
+            <span class="font-serif text-2xl font-bold text-milk-100">Velvet &amp; Crumb</span>
+          </div>
+          <p class="text-sm text-milk-300/75 leading-relaxed">
+            Small-batch dark chocolate patisserie and cultured cream bakery. Crafted by hand, served warm, and meant to be savored slowly.
+          </p>
+          <div class="pt-1 space-y-1.5 text-sm text-milk-300/85">
+            <p class="font-medium text-milk-100">29 Town Planning Way by Spar, Lagos, Nigeria</p>
+            <p>
+              <a href="tel:08028158281" class="text-caramel-400 hover:text-caramel-300 font-semibold transition-colors">
+                08028158281
+              </a>
+            </p>
+          </div>
+          <div class="pt-1">
+            <span class="inline-block px-3 py-1 rounded-full bg-choco-900 border border-milk-200/15 text-xs text-caramel-400 font-semibold">● Open Today Until 7 PM</span>
+          </div>
+        </div>
+
+        <!-- Column 1: Explore -->
+        <div class="lg:col-span-2 space-y-3">
+          <h4 class="font-serif text-lg font-bold text-milk-100">Explore</h4>
+          <ul class="text-sm space-y-2.5 text-milk-300/80">
+            <li><a href="#" class="hover:text-caramel-400 transition-colors">Home</a></li>
+            <li><a href="#menu" class="hover:text-caramel-400 transition-colors">Shop</a></li>
+            <li><a href="#menu" class="hover:text-caramel-400 transition-colors">Our Bakes</a></li>
+            <li><a href="#our-story" class="hover:text-caramel-400 transition-colors">Our Story</a></li>
+            <li><a href="#our-story" class="hover:text-caramel-400 transition-colors">Ingredients</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 2: Customer Care & Allergens -->
+        <div class="lg:col-span-3 space-y-3">
+          <h4 class="font-serif text-lg font-bold text-milk-100">Care &amp; Policies</h4>
+          <ul class="text-sm space-y-2.5 text-milk-300/80">
+            <li><button type="button" onclick="openInfoModal('contact')" class="hover:text-caramel-400 transition-colors text-left">Contact Us</button></li>
+            <li><button type="button" onclick="openInfoModal('faqs')" class="hover:text-caramel-400 transition-colors text-left">FAQs</button></li>
+            <li><button type="button" onclick="openInfoModal('delivery')" class="hover:text-caramel-400 transition-colors text-left">Delivery &amp; Pickup</button></li>
+            <li><button type="button" onclick="openInfoModal('track')" class="hover:text-caramel-400 transition-colors text-left">Track Order</button></li>
+            <li><button type="button" onclick="openInfoModal('allergens')" class="text-caramel-400 hover:text-caramel-300 font-semibold transition-colors text-left">Allergens Guide</button></li>
+            <li><button type="button" onclick="openInfoModal('legal')" class="hover:text-caramel-400 transition-colors text-left">Terms &amp; Privacy Policy</button></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Newsletter & Hours -->
+        <div class="lg:col-span-3 space-y-3">
+          <h4 class="font-serif text-lg font-bold text-milk-100">Fresh-Out-Of-Oven Alerts</h4>
+          <p class="text-xs text-milk-300/75">Get weekly secret tart drops &amp; seasonal truffle releases.</p>
+          <form id="newsletter-form" class="flex flex-col gap-2.5 pt-1">
+            <input 
+              type="email" 
+              required 
+              placeholder="you@example.com" 
+              class="w-full px-4 py-3 rounded-xl bg-choco-900 border border-milk-200/20 text-milk-100 placeholder-milk-300/45 text-sm focus:outline-none focus:border-caramel-400"
+            />
+            <button type="submit" class="w-full px-4 py-3 rounded-xl bg-caramel-500 hover:bg-caramel-400 text-choco-950 font-bold text-sm transition-colors">
+              Join The Tasting List
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar: Copyright of debare-codes + YouTube & Instagram Handles -->
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-milk-300/70">
+        <p>© 2026 Velvet &amp; Crumb. Designed &amp; Built by <span class="text-caramel-400 font-semibold">debare-codes</span>. All rights reserved.</p>
+        
+        <div class="flex items-center gap-4">
+          <a 
+            href="https://youtube.com/@debare-codes" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="YouTube @debare-codes"
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-choco-900 hover:bg-choco-800 border border-milk-200/15 text-milk-100 hover:text-caramel-400 transition-colors"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+            <span class="font-semibold">@debare-codes</span>
+          </a>
+
+          <a 
+            href="https://instagram.com/debare-codes" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            aria-label="Instagram @debare-codes"
+            class="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-choco-900 hover:bg-choco-800 border border-milk-200/15 text-milk-100 hover:text-caramel-400 transition-colors"
+          >
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+            <span class="font-semibold">@debare-codes</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- INFO & ALLERGENS MODAL -->
+  <div id="info-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-choco-950/75 backdrop-blur-sm">
+    <div class="bg-milk-100 text-choco-900 rounded-3xl max-w-lg w-full overflow-hidden shadow-choco-lg border-2 border-caramel-500/40">
+      <div class="p-6 bg-choco-900 text-milk-100 flex items-center justify-between">
+        <h3 id="info-modal-title" class="font-serif text-2xl font-bold">Allergens Guide</h3>
+        <button id="close-info-btn" aria-label="Close info modal" class="w-9 h-9 rounded-full bg-choco-800 hover:bg-choco-700 text-milk-100 flex items-center justify-center font-bold">
+          ✕
+        </button>
+      </div>
+      <div id="info-modal-body" class="p-6 sm:p-7 space-y-4 text-sm text-choco-800 leading-relaxed">
+        <!-- Populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- QUICK-VIEW PRODUCT MODAL -->
+  <div id="quickview-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-choco-950/75 backdrop-blur-sm">
+    <div class="bg-milk-100 text-choco-900 rounded-3xl max-w-lg w-full overflow-hidden shadow-choco-lg border-2 border-caramel-500/40 animate-[fadeIn_0.2s_ease-out]">
+      <div class="relative h-60 bg-choco-800">
+        <img id="qv-image" src="" alt="" class="w-full h-full object-cover" />
+        <button id="close-qv-btn" aria-label="Close modal" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-choco-900/85 text-milk-100 hover:bg-choco-900 flex items-center justify-center font-bold">
+          ✕
+        </button>
+        <span id="qv-category" class="absolute bottom-3 left-4 px-3 py-1 rounded-full bg-choco-900/90 text-caramel-400 text-xs font-bold"></span>
+      </div>
+      <div class="p-6 sm:p-7 space-y-4">
+        <div class="flex items-start justify-between gap-4">
+          <h3 id="qv-title" class="font-serif text-2xl font-bold text-choco-900"></h3>
+          <span id="qv-price" class="font-serif text-2xl font-bold text-caramel-600"></span>
+        </div>
+        <p id="qv-desc" class="text-sm text-choco-700 leading-relaxed"></p>
+        <div id="qv-tags" class="flex flex-wrap gap-2"></div>
+        <div class="pt-3 flex gap-3">
+          <button id="qv-add-btn" class="flex-1 py-3.5 rounded-full bg-choco-900 hover:bg-choco-800 text-milk-100 font-bold text-sm shadow-choco transition-all">
+            Add to My Box
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE-OVER SHOPPING CART DRAWER -->
+  <div id="cart-backdrop" class="fixed inset-0 z-50 hidden bg-choco-950/70 backdrop-blur-xs transition-opacity"></div>
+  <aside id="cart-drawer" class="fixed top-0 right-0 z-50 h-full w-full max-w-md bg-milk-100 text-choco-900 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col border-l-2 border-choco-900/15">
+    
+    <!-- Drawer Header -->
+    <div class="p-6 bg-choco-900 text-milk-100 flex items-center justify-between">
+      <div>
+        <span class="text-[11px] uppercase tracking-widest text-caramel-400 font-bold">Fresh Bakery Order</span>
+        <h3 class="font-serif text-2xl font-bold">Your Pastry Box</h3>
+      </div>
+      <button id="close-cart-btn" aria-label="Close Cart" class="w-9 h-9 rounded-full bg-choco-800 hover:bg-choco-700 text-milk-100 flex items-center justify-center transition-colors">
+        ✕
+      </button>
+    </div>
+
+    <!-- Drawer Items List -->
+    <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+      <!-- Populated dynamically -->
+    </div>
+
+    <!-- Drawer Footer & Simulated Checkout -->
+    <div id="cart-footer" class="p-6 bg-milk-200/80 border-t border-choco-900/10 space-y-4">
+      <div class="space-y-1.5 text-sm">
+        <div class="flex justify-between text-choco-700">
+          <span>Subtotal</span>
+          <span id="cart-subtotal" class="font-semibold">$0.00</span>
+        </div>
+        <div class="flex justify-between text-choco-700">
+          <span>Chilled Insulated Packaging</span>
+          <span class="text-caramel-600 font-semibold">Complimentary</span>
+        </div>
+        <div class="flex justify-between text-lg font-bold text-choco-900 pt-2 border-t border-choco-900/10">
+          <span>Total</span>
+          <span id="cart-total" class="font-serif text-xl">$0.00</span>
+        </div>
+      </div>
+
+      <button id="checkout-btn" class="w-full py-4 rounded-full bg-caramel-500 hover:bg-caramel-400 disabled:opacity-45 disabled:cursor-not-allowed text-choco-950 font-extrabold text-sm tracking-wide shadow-caramel transition-all">
+        Complete Bakery Order
+      </button>
+    </div>
+  </aside>
+
+  <!-- APPLICATION LOGIC -->
+  <script>
+    // =========================================================================
+    // 1. ARTISAN BAKERY CATALOG DATA
+    // =========================================================================
+    const PRODUCTS = [
+      {
+        id: 1,
+        name: "Midnight Ganache & Milk Cloud",
+        category: "Artisan Cakes",
+        price: 14.50,
+        tags: ["72% Single-Origin", "Chef's Signature"],
+        description: "Dark Ecuadorian chocolate sablé layered with silky 72% ganache and crowned with whipped Madagascar vanilla jersey cream.",
+        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80",
+        fallback: "https://placehold.co/600x450/24130C/FDF6EC?text=Midnight+Ganache+Tart"
+      },
+      {
+        id: 2,
+        name: "Salted Caramel & Milk Cruffin",
+        category: "Milky Pastries",
+        price: 6.75,
+        tags: ["27-Layer Brioche", "Warm"],
+        description: "Crisp caramelized croissant-muffin filled to order with burnt honey milk jam and flaky Maldon sea salt.",
+        image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=700&q=80",
+        fallback: "https://placehold.co/600x450/F7E8D3/24130C?text=Salted+Caramel+Cruffin"
+      },
+      {
+        id: 3,
+        name: "Smoked Espresso Velvet Truffles",
+        category: "Chocolates & Truffles",
+        price: 12.00,
+        tags: ["Gluten-Free", "Box of 4"],
+        description: "Hand-rolled dark cocoa truffles infused with cold-brewed espresso beans and dusted in raw Dutch-process cacao.",
+        image: "https://images.unsplash.com/photo-1548907040-4baa42d10919?auto=format&fit=crop&w=700&q=80",
+        fallback: "https://placehold.co/600x450/331B12/FDF6EC?text=Espresso+Velvet+Truffles"
+      },
+      {
+        id: 4,
+        name: "Double-Baked Pain au Chocolat",
+        category: "Milky Pastries",
+        price: 6.25,
+        tags: ["Cultured Butter", "Bestseller"],
+        description: "Honeycomb-crumbed sourdough croissant wrapped around twin batons of 70% dark chocolate and brushed with vanilla milk glaze.",
+        image: "https://images.unsplash.com/photo-1530610476181-d83430b64dcd?auto=format&fit=crop&w=700&q=80",
+        fallback: "https://placehold.co/600x450/F7E8D3/24130C?text=Pain+au+Chocolat"
+      },
+      {
+        id: 5,
+        name: "Hazelnut Praline Gianduja Bar",
+        category: "Chocolates & Truffles",
+        price: 9.50,
+        tags: ["Piedmont Hazelnuts", "Vegan Option"],
+        description: "Stone-ground roasted hazelnuts folded into creamy oat-milk and dark couverture chocolate with crispy feuilletine.",
+        image: "https://images.unsplash.com/photo-1606312619070-d48b4c652a52?auto=format&fit=crop&w=700&q=80",
+        fallback: "https://placehold.co/600x450/24130C/D98A3C?text=Hazelnut+Gianduja+Bar"
+      },
+      {
+        id: 6,
+        name: "Tres Leches Dark Cocoa Gateau",
+        category: "Artisan Cakes",
+        price: 13.00,
+        tags: ["Soaked Sponge", "Nut-Free"],
+        description: "Deep cocoa sponge soaked in spiced sweet milk, topped with torched meringue peaks and dark chocolate curls.",
+        image: "https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=700&q=80",
+        fallback: "https://placehold.co/600x450/331B12/FDF6EC?text=Tres+Leches+Cocoa+Gateau"
+      },
+      {
+        id: 7,
+        name: "Dark Cocoa & Cherry Country Boule",
+        category: "Sourdough & Breads",
+        price: 11.50,
+        tags: ["36h Ferment", "Naturally Leavened"],
+        description: "Crusty wild-yeast country sourdough studded with dark chocolate chunks, tart Montmorency cherries, and toasted walnuts.",
+        image: "https://images.unsplash.com/photo-1585478259715-876acc5be8eb?auto=format&fit=crop&w=700&q=80",
+        fallback: "https://placehold.co/600x450/47271B/FDF6EC?text=Cocoa+Cherry+Sourdough"
+      },
+      {
+        id: 8,
+        name: "Hokkaido Milk & Brown Butter Brioche",
+        category: "Sourdough & Breads",
+        price: 10.00,
+        tags: ["Pillowy Soft", "Tangzhong"],
+        description: "Feathery Japanese-style milk bread enriched with caramelized nutty brown butter and a whisper of wildflower honey.",
+        image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=700&q=80",
+        fallback: "https://placehold.co/600x450/F7E8D3/24130C?text=Hokkaido+Milk+Brioche"
+      }
+    ];
+
+    // Treats available for the 4-Piece Gift Box Builder
+    const BOX_TREATS = [
+      { id: 'b1', name: "72% Sea Salt Truffle", note: "Dark & Crisp", price: 4.50, tone: "dark" },
+      { id: 'b2', name: "Vanilla Milk Cream Puff", note: "Silky & Light", price: 4.75, tone: "milk" },
+      { id: 'b3', name: "Caramel Hazelnut Praline", note: "Nutty Crunch", price: 4.50, tone: "caramel" },
+      { id: 'b4', name: "Espresso Ganache Square", note: "Bold Roast", price: 4.75, tone: "dark" },
+      { id: 'b5', name: "Dulce de Leche Macaron", note: "Sweet Cream", price: 4.25, tone: "milk" },
+      { id: 'b6', name: "Blood Orange Dark Tartlet", note: "Citrus Zest", price: 5.00, tone: "caramel" }
+    ];
+
+    // =========================================================================
+    // 2. APPLICATION STATE
+    // =========================================================================
+    let activeCategory = "All";
+    let customBoxSlots = []; // Max 4 items
+    let cart = [
+      { id: 1, name: "Midnight Ganache & Milk Cloud", price: 14.50, qty: 1, subtitle: "Single Slice" }
+    ];
+
+    // =========================================================================
+    // 3. TOAST NOTIFICATION SYSTEM (Safe replacement for alert())
+    // =========================================================================
+    function showToast(message, accent = "caramel") {
+      const container = document.getElementById("toast-container");
+      const toast = document.createElement("div");
+      const bgClass = accent === "dark" ? "bg-choco-900 text-milk-100 border-caramel-500/40" : "bg-milk-100 text-choco-900 border-choco-900/20";
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-2xl shadow-choco-lg border ${bgClass} text-sm font-semibold transform transition-all duration-300 translate-y-2 opacity-0`;
+      toast.innerHTML = `
+        <span class="w-2.5 h-2.5 rounded-full bg-caramel-500 shrink-0"></span>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+
+      requestAnimationFrame(() => {
+        toast.classList.remove("translate-y-2", "opacity-0");
+      });
+
+      setTimeout(() => {
+        toast.classList.add("translate-y-2", "opacity-0");
+        setTimeout(() => toast.remove(), 300);
+      }, 2800);
+    }
+
+    // =========================================================================
+    // 4. MENU RENDERING & CATEGORY FILTERING
+    // =========================================================================
+    function renderMenu() {
+      const grid = document.getElementById("menu-grid");
+      const filtered = activeCategory === "All"
+        ? PRODUCTS
+        : PRODUCTS.filter(item => item.category === activeCategory);
+
+      grid.innerHTML = filtered.map(product => `
+        <article class="card-lift group bg-milk-50 rounded-3xl overflow-hidden border border-choco-900/15 shadow-choco flex flex-col justify-between">
+          <div>
+            <!-- Product Visual -->
+            <div class="relative aspect-[4/3] bg-choco-800 overflow-hidden cursor-pointer" onclick="openQuickView(${product.id})">
+              <img 
+                src="${product.image}" 
+                onerror="this.src='${product.fallback}'"
+                alt="${product.name}" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-choco-950/60 via-transparent to-transparent opacity-80"></div>
+              <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-choco-900/90 backdrop-blur-xs text-milk-100 text-[11px] font-semibold">
+                ${product.category}
+              </span>
+              <button 
+                type="button"
+                aria-label="Quick view ${product.name}"
+                class="absolute bottom-3 right-3 px-3 py-1.5 rounded-full bg-milk-100/95 text-choco-900 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+              >
+                Quick View
+              </button>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-5 space-y-2.5">
+              <div class="flex flex-wrap gap-1.5">
+                ${product.tags.map(tag => `
+                  <span class="px-2.5 py-0.5 rounded-md bg-milk-200 text-choco-800 text-[11px] font-semibold">
+                    ${tag}
+                  </span>
+                `).join("")}
+              </div>
+
+              <h3 class="font-serif text-xl font-bold text-choco-900 leading-snug group-hover:text-caramel-600 transition-colors cursor-pointer" onclick="openQuickView(${product.id})">
+                ${product.name}
+              </h3>
+
+              <p class="text-xs text-choco-700 leading-relaxed line-clamp-2">
+                ${product.description}
+              </p>
+            </div>
+          </div>
+
+          <!-- Price & Add to Box CTA -->
+          <div class="px-5 pb-5 pt-2 flex items-center justify-between border-t border-choco-900/10 mt-2">
+            <span class="font-serif text-xl font-bold text-choco-900">$${product.price.toFixed(2)}</span>
+            <button 
+              onclick="addToCartById(${product.id})" 
+              class="px-4 py-2.5 rounded-full bg-choco-900 hover:bg-caramel-500 text-milk-100 hover:text-choco-950 font-bold text-xs tracking-wide transition-colors shadow-sm active:scale-95"
+            >
+              + Add to Box
+            </button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    // Category tab event listeners
+    document.querySelectorAll(".filter-tab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-tab").forEach(b => {
+          b.classList.remove("bg-choco-900", "text-milk-100", "shadow-choco");
+          b.classList.add("bg-milk-200/80", "text-choco-800");
+        });
+        btn.classList.remove("bg-milk-200/80", "text-choco-800");
+        btn.classList.add("bg-choco-900", "text-milk-100", "shadow-choco");
+
+        activeCategory = btn.dataset.category;
+        renderMenu();
+      });
+    });
+
+    // =========================================================================
+    // 5. QUICK-VIEW MODAL LOGIC
+    // =========================================================================
+    function openQuickView(id) {
+      const product = PRODUCTS.find(p => p.id === id);
+      if (!product) return;
+
+      const modal = document.getElementById("quickview-modal");
+      const img = document.getElementById("qv-image");
+      img.src = product.image;
+      img.onerror = () => { img.src = product.fallback; };
+
+      document.getElementById("qv-category").textContent = product.category;
+      document.getElementById("qv-title").textContent = product.name;
+      document.getElementById("qv-price").textContent = `$${product.price.toFixed(2)}`;
+      document.getElementById("qv-desc").textContent = product.description;
+      document.getElementById("qv-tags").innerHTML = product.tags.map(t =>
+        `<span class="px-3 py-1 rounded-full bg-milk-200 text-choco-900 text-xs font-semibold">${t}</span>`
+      ).join("");
+
+      const addBtn = document.getElementById("qv-add-btn");
+      addBtn.onclick = () => {
+        addToCartById(product.id);
+        closeQuickView();
+      };
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeQuickView() {
+      const modal = document.getElementById("quickview-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    document.getElementById("close-qv-btn").addEventListener("click", closeQuickView);
+    document.getElementById("quickview-modal").addEventListener("click", (e) => {
+      if (e.target.id === "quickview-modal") closeQuickView();
+    });
+
+    // =========================================================================
+    // 6. INTERACTIVE 4-TREAT CUSTOM BOX BUILDER
+    // =========================================================================
+    function renderBoxBuilder() {
+      const optionsContainer = document.getElementById("builder-options");
+      optionsContainer.innerHTML = BOX_TREATS.map(treat => {
+        const badgeColor = treat.tone === "dark"
+          ? "bg-choco-950 text-milk-100 border-milk-200/20"
+          : treat.tone === "milk"
+            ? "bg-milk-100 text-choco-900 border-milk-200"
+            : "bg-caramel-500 text-choco-950 border-caramel-400";
+
+        return `
+          <button 
+            type="button"
+            onclick="addTreatToBox('${treat.id}')"
+            class="text-left p-4 rounded-2xl bg-choco-900/90 hover:bg-choco-700/80 border border-milk-200/15 hover:border-caramel-400/50 transition-all flex items-center justify-between gap-3 group active:scale-[0.98]"
+          >
+            <div>
+              <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider border ${badgeColor} mb-1.5">
+                ${treat.note}
+              </span>
+              <p class="font-serif font-bold text-milk-100 text-base group-hover:text-caramel-400 transition-colors">${treat.name}</p>
+              <p class="text-xs text-milk-300/75 mt-0.5">$${treat.price.toFixed(2)}</p>
+            </div>
+            <span class="w-8 h-8 rounded-full bg-milk-100/10 group-hover:bg-caramel-500 group-hover:text-choco-950 text-milk-100 flex items-center justify-center font-bold transition-colors shrink-0">
+              +
+            </span>
+          </button>
+        `;
+      }).join("");
+
+      updateBoxVisuals();
+    }
+
+    function addTreatToBox(treatId) {
+      if (customBoxSlots.length >= 4) {
+        showToast("Your 4-piece keepsake box is full! Remove a slot or add to cart.", "dark");
+        return;
+      }
+      const treat = BOX_TREATS.find(t => t.id === treatId);
+      if (treat) {
+        customBoxSlots.push({ ...treat, uid: Date.now() + Math.random() });
+        updateBoxVisuals();
+      }
+    }
+
+    function removeTreatFromBox(index) {
+      customBoxSlots.splice(index, 1);
+      updateBoxVisuals();
+    }
+
+    function updateBoxVisuals() {
+      const slotsGrid = document.getElementById("box-slots-grid");
+      let slotsHTML = "";
+
+      for (let i = 0; i < 4; i++) {
+        const item = customBoxSlots[i];
+        if (item) {
+          const cardBg = item.tone === "dark"
+            ? "bg-choco-800 text-milk-100 border-caramel-500/50"
+            : item.tone === "milk"
+              ? "bg-milk-100 text-choco-900 border-milk-300"
+              : "bg-caramel-500 text-choco-950 border-caramel-400";
+
+          slotsHTML += `
+            <div class="relative p-3.5 rounded-xl border ${cardBg} min-h-[104px] flex flex-col justify-between shadow-md transition-all">
+              <div class="flex items-start justify-between gap-1">
+                <span class="text-[10px] font-extrabold uppercase opacity-75">Slot 0${i + 1}</span>
+                <button 
+                  type="button" 
+                  onclick="removeTreatFromBox(${i})" 
+                  aria-label="Remove ${item.name}"
+                  class="w-5 h-5 rounded-full bg-black/20 hover:bg-black/40 text-current text-[10px] flex items-center justify-center font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+              <p class="font-serif font-bold text-xs sm:text-sm leading-tight mt-1">${item.name}</p>
+              <p class="text-[11px] font-semibold opacity-80 mt-1">$${item.price.toFixed(2)}</p>
+            </div>
+          `;
+        } else {
+          slotsHTML += `
+            <div class="p-3.5 rounded-xl border-2 border-dashed border-milk-200/25 bg-choco-950/60 min-h-[104px] flex flex-col items-center justify-center text-center text-milk-300/45">
+              <span class="text-lg font-serif">+</span>
+              <span class="text-[11px] font-medium">Empty Slot 0${i + 1}</span>
+            </div>
+          `;
+        }
+      }
+
+      slotsGrid.innerHTML = slotsHTML;
+
+      // Update progress & pricing
+      const count = customBoxSlots.length;
+      document.getElementById("box-progress-text").textContent = `${count} / 4 Selected`;
+      document.getElementById("box-progress-bar").style.width = `${(count / 4) * 100}%`;
+
+      const rawTotal = customBoxSlots.reduce((sum, item) => sum + item.price, 0);
+      const isComplete = count === 4;
+      const finalPrice = isComplete ? rawTotal * 0.9 : rawTotal;
+
+      document.getElementById("box-total-price").textContent = `$${finalPrice.toFixed(2)}`;
+      const discountBadge = document.getElementById("bundle-discount-badge");
+      if (isComplete) {
+        discountBadge.classList.remove("hidden");
+      } else {
+        discountBadge.classList.add("hidden");
+      }
+
+      const addBtn = document.getElementById("add-custom-box-btn");
+      addBtn.disabled = count === 0;
+      addBtn.textContent = isComplete ? "Add Complete Box ($" + finalPrice.toFixed(2) + ")" : `Add Box (${count}/4)`;
+    }
+
+    document.getElementById("clear-box-btn").addEventListener("click", () => {
+      customBoxSlots = [];
+      updateBoxVisuals();
+    });
+
+    document.getElementById("add-custom-box-btn").addEventListener("click", () => {
+      if (customBoxSlots.length === 0) return;
+      const rawTotal = customBoxSlots.reduce((sum, item) => sum + item.price, 0);
+      const isComplete = customBoxSlots.length === 4;
+      const finalPrice = Number((isComplete ? rawTotal * 0.9 : rawTotal).toFixed(2));
+      const summaryNames = customBoxSlots.map(i => i.name).join(", ");
+
+      cart.push({
+        id: "custom-box-" + Date.now(),
+        name: isComplete ? "Signature 4-Piece Velvet Box" : `Custom ${customBoxSlots.length}-Piece Box`,
+        price: finalPrice,
+        qty: 1,
+        subtitle: summaryNames
+      });
+
+      customBoxSlots = [];
+      updateBoxVisuals();
+      renderCart();
+      openCartDrawer();
+      showToast("Custom keepsake box added to your order!", "dark");
+    });
+
+    // =========================================================================
+    // 7. SLIDE-OVER SHOPPING CART DRAWER
+    // =========================================================================
+    function addToCartById(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      const existing = cart.find(item => item.id === product.id);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          qty: 1,
+          subtitle: product.category
+        });
+      }
+
+      renderCart();
+      showToast(`Added "${product.name}" to your pastry box`);
+    }
+
+    function updateCartQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      renderCart();
+    }
+
+    function removeCartItem(index) {
+      cart.splice(index, 1);
+      renderCart();
+    }
+
+    function renderCart() {
+      const container = document.getElementById("cart-items-container");
+      const badge = document.getElementById("cart-badge");
+      const subtotalEl = document.getElementById("cart-subtotal");
+      const totalEl = document.getElementById("cart-total");
+      const checkoutBtn = document.getElementById("checkout-btn");
+
+      const totalItems = cart.reduce((acc, item) => acc + item.qty, 0);
+      badge.textContent = totalItems;
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="h-full flex flex-col items-center justify-center text-center py-12 space-y-3">
+            <div class="w-16 h-16 rounded-full bg-milk-200 text-choco-700 flex items-center justify-center font-serif text-2xl">✦</div>
+            <h4 class="font-serif text-xl font-bold text-choco-900">Your pastry box is empty</h4>
+            <p class="text-xs text-choco-600 max-w-xs">Explore our patisserie case or curate a custom 4-piece velvet box to get started.</p>
+          </div>
+        `;
+        subtotalEl.textContent = "$0.00";
+        totalEl.textContent = "$0.00";
+        checkoutBtn.disabled = true;
+        return;
+      }
+
+      checkoutBtn.disabled = false;
+      let subtotal = 0;
+
+      container.innerHTML = cart.map((item, idx) => {
+        const lineTotal = item.price * item.qty;
+        subtotal += lineTotal;
+        return `
+          <div class="p-4 rounded-2xl bg-milk-50 border border-choco-900/10 shadow-xs flex items-start justify-between gap-3">
+            <div class="space-y-1">
+              <h4 class="font-serif font-bold text-base text-choco-900 leading-snug">${item.name}</h4>
+              <p class="text-xs text-choco-600 line-clamp-2">${item.subtitle}</p>
+              <p class="font-bold text-sm text-caramel-600 pt-1">$${lineTotal.toFixed(2)}</p>
+            </div>
+
+            <div class="flex flex-col items-end gap-2 shrink-0">
+              <button onclick="removeCartItem(${idx})" class="text-[11px] text-choco-400 hover:text-choco-900 underline">Remove</button>
+              <div class="inline-flex items-center rounded-full bg-milk-200 border border-choco-900/10 p-0.5">
+                <button onclick="updateCartQty(${idx}, -1)" class="w-7 h-7 rounded-full hover:bg-milk-100 font-bold text-choco-900">−</button>
+                <span class="px-2.5 text-xs font-bold text-choco-900">${item.qty}</span>
+                <button onclick="updateCartQty(${idx}, 1)" class="w-7 h-7 rounded-full hover:bg-milk-100 font-bold text-choco-900">+</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+      totalEl.textContent = `$${subtotal.toFixed(2)}`;
+    }
+
+    function openCartDrawer() {
+      document.getElementById("cart-backdrop").classList.remove("hidden");
+      document.getElementById("cart-drawer").classList.remove("translate-x-full");
+    }
+
+    function closeCartDrawer() {
+      document.getElementById("cart-backdrop").classList.add("hidden");
+      document.getElementById("cart-drawer").classList.add("translate-x-full");
+    }
+
+    document.getElementById("open-cart-btn").addEventListener("click", openCartDrawer);
+    document.getElementById("close-cart-btn").addEventListener("click", closeCartDrawer);
+    document.getElementById("cart-backdrop").addEventListener("click", closeCartDrawer);
+
+    // Simulated Checkout Confirmation
+    document.getElementById("checkout-btn").addEventListener("click", () => {
+      if (cart.length === 0) return;
+      const orderNum = Math.floor(1000 + Math.random() * 9000);
+      cart = [];
+      renderCart();
+      closeCartDrawer();
+      showToast(`Order #VC-${orderNum} confirmed! Our bakers are packing your box.`, "dark");
+    });
+
+    // Workshop Reservation Helper
+    function reserveWorkshop() {
+      cart.push({
+        id: "workshop-" + Date.now(),
+        name: "Sunday Chocolate & Lamination Atelier",
+        price: 95.00,
+        qty: 1,
+        subtitle: "1 Seat • Sunday 10:00 AM"
+      });
+      renderCart();
+      openCartDrawer();
+      showToast("Workshop seat added to your box!");
+    }
+
+    // Mobile Menu Toggle & Newsletter Form
+    document.getElementById("mobile-menu-btn").addEventListener("click", () => {
+      document.getElementById("mobile-menu").classList.toggle("hidden");
+    });
+
+    document.getElementById("newsletter-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      e.target.reset();
+      showToast("Welcome to the Velvet & Crumb Tasting List!", "dark");
+    });
+
+    // =========================================================================
+    // 8. ALLERGENS & STORE POLICIES MODAL
+    // =========================================================================
+    const INFO_CONTENT = {
+      allergens: {
+        title: "Allergens & Dietary Guide",
+        body: `
+          <p class="font-semibold text-choco-900">Every bake is crafted in an artisan kitchen that handles major allergens:</p>
+          <ul class="space-y-2.5">
+            <li class="p-3 rounded-xl bg-milk-200/80"><strong class="text-choco-900">Dairy &amp; Eggs:</strong> Used across our cultured butter croissants, Jersey milk creams, and brioche.</li>
+            <li class="p-3 rounded-xl bg-milk-200/80"><strong class="text-choco-900">Tree Nuts &amp; Peanuts:</strong> Piedmont hazelnuts, almonds, and walnuts are roasted on-site for pralines and country loaves.</li>
+            <li class="p-3 rounded-xl bg-milk-200/80"><strong class="text-choco-900">Gluten (Wheat):</strong> Present in all laminated pastries and sourdoughs. Ask for our <em>Smoked Espresso Velvet Truffles</em> for a flourless option.</li>
+            <li class="p-3 rounded-xl bg-milk-200/80"><strong class="text-choco-900">Soy Lecithin:</strong> Minimal trace in select couverture coatings.</li>
+          </ul>
+        `
+      },
+      contact: {
+        title: "Contact & Visit Our Bakery",
+        body: `
+          <p><strong class="text-choco-900">Flagship Bakery:</strong><br/>29 Town Planning Way by Spar, Lagos, Nigeria</p>
+          <p><strong class="text-choco-900">Direct Phone &amp; WhatsApp Orders:</strong><br/><a href="tel:08028158281" class="text-caramel-600 font-bold text-base underline">08028158281</a></p>
+          <p><strong class="text-choco-900">Hours:</strong> Tue – Sat (7:00 AM – 7:00 PM) • Sun (8:00 AM – 5:00 PM)</p>
+        `
+      },
+      delivery: {
+        title: "Delivery & Bakery Pickup",
+        body: `
+          <p><strong class="text-choco-900">In-Store Pickup:</strong> Collect warm orders at <strong>29 Town Planning Way by Spar, Lagos, Nigeria</strong> within 30 minutes of confirmation.</p>
+          <p><strong class="text-choco-900">Chilled Lagos Dispatch:</strong> Same-day insulated delivery across Lagos mainland &amp; island. Call <strong>08028158281</strong> for custom cake dispatch.</p>
+        `
+      },
+      faqs: {
+        title: "Frequently Asked Questions",
+        body: `
+          <p><strong class="text-choco-900">How should I store my truffles &amp; tarts?</strong><br/>Keep ganache tarts chilled and bring to room temperature 15 minutes before serving for the best melt.</p>
+          <p><strong class="text-choco-900">Can I customize a 4-piece gift box?</strong><br/>Yes! Use our interactive 4-Piece Velvet &amp; Milk Box Builder above to mix flavors and automatically unlock 10% off.</p>
+        `
+      },
+      track: {
+        title: "Track Your Bakery Order",
+        body: `
+          <p>All fresh orders are dispatched with live rider updates. Need immediate status on an active pastry box? Call or message our front counter at <a href="tel:08028158281" class="text-caramel-600 font-bold underline">08028158281</a> with your <strong>#VC</strong> order number.</p>
+        `
+      },
+      legal: {
+        title: "Terms & Privacy Policy",
+        body: `
+          <p>Custom celebration cakes require 24 hours notice for cancellations or rescheduling. Your contact details are used strictly to fulfill bakery orders and send requested fresh-bake alerts.</p>
+        `
+      }
+    };
+
+    function openInfoModal(key) {
+      const data = INFO_CONTENT[key] || INFO_CONTENT.allergens;
+      document.getElementById("info-modal-title").textContent = data.title;
+      document.getElementById("info-modal-body").innerHTML = data.body;
+      const modal = document.getElementById("info-modal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeInfoModal() {
+      const modal = document.getElementById("info-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    document.getElementById("close-info-btn").addEventListener("click", closeInfoModal);
+    document.getElementById("info-modal").addEventListener("click", (e) => {
+      if (e.target.id === "info-modal") closeInfoModal();
+    });
+
+    // Initialize Page
+    renderMenu();
+    renderBoxBuilder();
+    renderCart();
+  </script>
+</body>
+</html>
